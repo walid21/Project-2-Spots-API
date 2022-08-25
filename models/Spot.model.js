@@ -6,6 +6,9 @@ const spotSchema = new Schema({
     type: Schema.Types.String,
     // unique: true -> Ideally, should be unique, but its up to you
   },
+  location: {
+    type: Schema.Types.String,
+  },
   theme: {
     type: Schema.Types.String,
   },
