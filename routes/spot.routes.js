@@ -16,9 +16,6 @@ router.post("/", async (req, res, next) => {
     const createdSpot = await Spot.create({
       name: newSpot.name,
       location: newSpot.location,
-      theme: newSpot.theme,
-      activity: newSpot.activity,
-      topography: newSpot.topography,
     });
     console.log("createdSpot", createdSpot);
 
@@ -26,6 +23,24 @@ router.post("/", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+});
+
+router.patch("/:id", async (req, res) => {
+  const newSpot = req.body;
+  const spotUpdated = await Spot.findByIdAndUpdate(
+    req.params.id,
+    {
+      name: newSpot.name,
+      location: newSpot.location,
+    },
+    { new: true }
+  );
+  res.json({ spotUpdated });
+});
+
+router.delete("/:id", async (req, res) => {
+  await Spot.findByIdAndDelete(req.params.id);
+  res.sendStatus(204);
 });
 
 module.exports = router;
