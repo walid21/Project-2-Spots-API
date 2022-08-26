@@ -4,6 +4,9 @@ const experienceSchema = new Schema({
   name: {
     type: Schema.Types.String,
   },
+  location: {
+    type: Schema.Types.String,
+  },
   theme: {
     type: Schema.Types.String,
   },
@@ -13,9 +16,11 @@ const experienceSchema = new Schema({
   activity: {
     type: Schema.Types.String,
   },
-  spotId: {
-    type: Schema.Types.ObjectId,
-    ref: "Spot",
+  picture: {
+    type: Schema.Types.String,
+  },
+  userId: {
+    type: Schema.Types.String, // TODO: change to ObjectID + reference
   },
 });
 
