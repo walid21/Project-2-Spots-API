@@ -19,8 +19,8 @@ require("./config")(app);
 const allRoutes = require("./routes/index.routes");
 app.use("/api", allRoutes);
 
-const spotRoute = require("./routes/spot.routes");
-app.use("/spot", spotRoute);
+const experienceRoute = require("./routes/experience.routes");
+app.use("/experience", experienceRoute);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
