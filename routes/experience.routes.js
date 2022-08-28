@@ -20,6 +20,62 @@ router.get("/location", async (req, res, next) => {
     next(error);
   }
 });
+// filtre la base de données en fonction de l'activité grâce à
+// une requête query.
+router.get("/activity", async (req, res, next) => {
+  try {
+    const { activity } = req.query;
+    const experienceActivity = await Experience.find({ activity });
+    return res.status(200).json(experienceActivity);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// filtre la base de données en fonction du theme grâce à
+// une requête query.
+router.get("/theme", async (req, res, next) => {
+  try {
+    const { theme } = req.query;
+    const experienceTheme = await Experience.find({ theme });
+    return res.status(200).json(experienceTheme);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// filtre la base de données en fonction du nom de l'endroit grâce à
+// une requête query.
+router.get("/name", async (req, res, next) => {
+  try {
+    const { name } = req.query;
+    const experienceName = await Experience.find({ name });
+    return res.status(200).json(experienceName);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// router.get("/filter", async (req, res, next) => {
+//   try {
+//     const filter = req.query;
+//     let filteredExperiences;
+//     switch (filter) {
+//       case "req.query.name":
+//         filteredExperiences = await Experience.add(filter.name);
+//         break;
+//       case "req.query.activity":
+//         filteredExperiences = await Experience.find(filter.activity);
+//         break;
+//       case "location":
+//         filteredExperiences = await Experience.find(filter.location);
+//         break;
+//     }
+//     return res.status(200).json(filteredExperiences);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 router.post("/", async (req, res, next) => {
   try {
