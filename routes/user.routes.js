@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const User = require("../models/User.model");
 //const fileUploader = require("../config/cloudinary.config");
-
+const { isAuthenticated } = require("../middleware/middlewares");
+const bcrypt = require("bcrypt");
 router.get("/", async (req, res, next) => {
   try {
     const allUsers = await User.find();
@@ -14,10 +15,11 @@ router.get("/", async (req, res, next) => {
 router.post("/create", async (req, res, next) => {
   try {
     const newUser = req.body;
+    const passwordHashed = bcrypt.hashSync(newUser.password, 10);
     const createdUser = await User.create({
       username: newUser.username,
       email: newUser.email,
-      password: newUser.password,
+      password: passwordHashed,
       pictures: newUser.pictures,
       favorites: newUser.favorites,
     });

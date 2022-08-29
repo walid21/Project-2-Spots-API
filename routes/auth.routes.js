@@ -15,7 +15,9 @@ router.post("/signup", (req, res) => {
   const { username, password } = req.body;
 
   if (!username) {
-    return res.status(400).json({ errorMessage: "Please provide your username." });
+    return res
+      .status(400)
+      .json({ errorMessage: "Please provide your username." });
   }
 
   if (password.length < 8) {
@@ -63,7 +65,8 @@ router.post("/signup", (req, res) => {
         }
         if (error.code === 11000) {
           return res.status(400).json({
-            errorMessage: "Username need to be unique. The username you chose is already in use.",
+            errorMessage:
+              "Username need to be unique. The username you chose is already in use.",
           });
         }
         return res.status(500).json({ errorMessage: error.message });
@@ -75,7 +78,9 @@ router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
 
   if (!username) {
-    return res.status(400).json({ errorMessage: "Please provide your username." });
+    return res
+      .status(400)
+      .json({ errorMessage: "Please provide your username." });
   }
 
   // Here we use the same logic as above
@@ -91,13 +96,17 @@ router.post("/login", (req, res, next) => {
     .then((user) => {
       // If the user isn't found, send the message that user provided wrong credentials
       if (!user) {
-        return res.status(400).json({ errorMessage: "Wrong credentials." });
+        console.log(password);
+        console.log(user.password);
+        return res
+          .status(400)
+          .json({ errorMessage: "PAS TROUVE TETE DE NOEUDS" });
       }
 
       // If user is found based on the username, check if the in putted password matches the one saved in the database
       bcrypt.compare(password, user.password).then((isSamePassword) => {
         if (!isSamePassword) {
-          return res.status(400).json({ errorMessage: "Wrong credentials." });
+          return res.status(400).json({ errorMessage: "SHOW ME THE COCONUTS" });
         }
         // req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
         // Should create a token
