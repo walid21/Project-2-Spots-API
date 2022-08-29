@@ -8,7 +8,7 @@ const isAuthenticated = async (req, res, next) => {
   }
   token = token.replace("Bearer ", "");
   const userToken = jsonWebToken.verify(token, process.env.TOKEN_SECRET);
-  console.log(userToken);
+
   try {
     const user = await User.findOne({ username: userToken.username });
     if (!user) {

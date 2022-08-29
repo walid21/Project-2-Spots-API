@@ -21,7 +21,7 @@ const experienceSchema = new Schema({
   },
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "User", // TODO: change to ObjectID + reference
+    ref: "User",
   },
 });
 

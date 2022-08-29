@@ -1,11 +1,18 @@
+//=========================IMPORTING MIDDLEWAARE/MODELS/MODULES=========================//
 const router = require("express").Router();
 const Experience = require("../models/experience.model");
-const User = require("../models/User.model");
+// const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/middlewares");
 const uploader = require("../config/cloudinary.config");
 
-//const fileUploader = require("../config/cloudinary.config");
+//=======================================================================================//
+// All routes are prefixed with /experience/
+//=======================================================================================//
 
+//=========================GET=========================//
+// we should add the middleware isAuthenticated ?
+
+//GET => find all experiences
 router.get("/", async (req, res, next) => {
   try {
     const allExperiences = await Experience.find();
@@ -14,7 +21,8 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
-// GET // search by : location , theme , activity
+
+//GET => search by : location , theme , activity
 router.get("/search", async (req, res, next) => {
   try {
     const searchForExperience = req.query;
@@ -25,6 +33,9 @@ router.get("/search", async (req, res, next) => {
   }
 });
 
+//=========================POST=========================//
+
+//POST => create a new Experience + uploadPicture to Cloudinary
 router.post(
   "/create",
   isAuthenticated,
@@ -43,8 +54,6 @@ router.post(
         userId: req.user._id,
       });
 
-      // console.log("createdExperience", createdExperience);
-
       res.status(201).json({ experience: createdExperience });
     } catch (error) {
       next(error);
@@ -52,6 +61,7 @@ router.post(
   }
 );
 
+//=========================PATCH=========================// We should test them.
 router.patch("/:id", isAuthenticated, async (req, res) => {
   const newExperience = req.body;
   const ExperienceUpdated = await Experience.findByIdAndUpdate(
@@ -70,6 +80,7 @@ router.patch("/:id", isAuthenticated, async (req, res) => {
   res.json({ ExperienceUpdated });
 });
 
+//=========================PATCH=========================//
 router.delete("/:id", isAuthenticated, async (req, res) => {
   await Experience.findByIdAndDelete(req.params.id);
   res.sendStatus(204);
