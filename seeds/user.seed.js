@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../models/User.model");
 const bcrypt = require("bcrypt");
 const passwordHashed = bcrypt.hashSync("testtestehein", 10);
+const passwordHashed2 = bcrypt.hashSync("testtestehein", 10);
 const users = [
   {
     username: "testeur",
@@ -9,6 +10,13 @@ const users = [
     password: passwordHashed,
     pictures: [],
     favorites: [],
+  },
+  {
+    username: "benlapiche",
+    email: "mangemoilapiche@mail.com",
+    password: passwordHashed2,
+    favorites: [],
+    pictures: [],
   },
 ];
 

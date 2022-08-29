@@ -4,7 +4,7 @@ const allExperience = require("./experience.routes");
 const allUsers = require("./user.routes");
 const { isAuthenticated } = require("../middleware/middlewares");
 /* GET home page */
-router.get("/", isAuthenticated, (req, res, next) => {
+router.get("/", (req, res, next) => {
   console.log(req.user);
   res.json("All good in here");
 });
