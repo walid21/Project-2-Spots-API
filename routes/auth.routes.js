@@ -10,15 +10,7 @@ const saltRounds = 10;
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
 
-// Require necessary (isLoggedOut and isLoggedIn) middleware in order to control access to specific routes
-const isLoggedOut = require("../middleware/isLoggedOut");
-const isLoggedIn = require("../middleware/isLoggedIn");
-
-router.get("/loggedin", (req, res) => {
-  res.json(req.user);
-});
-
-router.post("/signup", isLoggedOut, (req, res) => {
+router.post("/signup", (req, res) => {
   const { username, password } = req.body;
 
   if (!username) {
@@ -28,9 +20,9 @@ router.post("/signup", isLoggedOut, (req, res) => {
   }
 
   if (password.length < 8) {
-    return res
-      .status(400)
-      .json({ errorMessage: "Your password needs to be at least 8 characters long." });
+    return res.status(400).json({
+      errorMessage: "Your password needs to be at least 8 characters long.",
+    });
   }
 
   //   ! This use case is using a regular expression to control for special characters and min length
@@ -49,9 +41,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
   User.findOne({ username }).then((found) => {
     // If the user is found, send the message username is taken
     if (found) {
-      return res
-        .status(400)
-        .json({ errorMessage: "Username already taken." });
+      return res.status(400).json({ errorMessage: "Username already taken." });
     }
 
     // if user is not found, create a new user - start with hashing the password
@@ -66,8 +56,6 @@ router.post("/signup", isLoggedOut, (req, res) => {
         });
       })
       .then((user) => {
-        // Bind the user to the session object
-        req.session.user = user;
         res.status(201).json(user);
       })
       .catch((error) => {
@@ -85,7 +73,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
   });
 });
 
-router.post("/login", isLoggedOut, (req, res, next) => {
+router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
 
   if (!username) {
@@ -115,8 +103,9 @@ router.post("/login", isLoggedOut, (req, res, next) => {
         if (!isSamePassword) {
           return res.status(400).json({ errorMessage: "Wrong credentials." });
         }
-        req.session.user = user;
         // req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
+        // Should create a token
+        // Renvoyer ce token a l'utilisateur
         return res.json(user);
       });
     })
@@ -127,15 +116,6 @@ router.post("/login", isLoggedOut, (req, res, next) => {
       next(err);
       // return res.status(500).render("login", { errorMessage: err.message });
     });
-});
-
-router.get("/logout", isLoggedIn, (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ errorMessage: err.message });
-    }
-    res.json({ message: "Done" });
-  });
 });
 
 module.exports = router;

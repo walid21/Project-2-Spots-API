@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Experience = require("../models/experience.model");
+const fileUploader = require('../config/cloudinary.config')
 
 router.get("/", async (req, res, next) => {
   try {
@@ -9,12 +10,11 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
-// filtre la base de données en fonction de la localisation grâce à
-// une requête query.
-router.get("/location", async (req, res, next) => {
+// GET // search by : location , theme , activity
+router.get("/search", async (req, res, next) => {
   try {
-    const { location } = req.query;
-    const locatedExperiences = await Experience.find({ location });
+    const searchForLocation = req.query;
+    const locatedExperiences = await Experience.find(searchForLocation);
     return res.status(200).json(locatedExperiences);
   } catch (error) {
     next(error);
