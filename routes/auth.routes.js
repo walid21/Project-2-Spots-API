@@ -3,6 +3,7 @@ const router = require("express").Router();
 // ℹ️ Handles password encryption
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
+const jsonWebToken = require("jsonwebtoken");
 
 // How many rounds should bcrypt run the salt (default [10 - 12 rounds])
 const saltRounds = 10;
@@ -14,9 +15,7 @@ router.post("/signup", (req, res) => {
   const { username, password } = req.body;
 
   if (!username) {
-    return res
-      .status(400)
-      .json({ errorMessage: "Please provide your username." });
+    return res.status(400).json({ errorMessage: "Please provide your username." });
   }
 
   if (password.length < 8) {
@@ -64,8 +63,7 @@ router.post("/signup", (req, res) => {
         }
         if (error.code === 11000) {
           return res.status(400).json({
-            errorMessage:
-              "Username need to be unique. The username you chose is already in use.",
+            errorMessage: "Username need to be unique. The username you chose is already in use.",
           });
         }
         return res.status(500).json({ errorMessage: error.message });
@@ -77,9 +75,7 @@ router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
 
   if (!username) {
-    return res
-      .status(400)
-      .json({ errorMessage: "Please provide your username." });
+    return res.status(400).json({ errorMessage: "Please provide your username." });
   }
 
   // Here we use the same logic as above
@@ -106,7 +102,13 @@ router.post("/login", (req, res, next) => {
         // req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
         // Should create a token
         // Renvoyer ce token a l'utilisateur
-        return res.json(user);
+        const payload = { username };
+        const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
+          algorithm: "HS256",
+          expiresIn: "1h",
+        });
+
+        res.status(200).json(token);
       });
     })
 
