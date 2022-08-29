@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const Experience = require("../models/experience.model");
-const fileUploader = require('../config/cloudinary.config')
+const User = require("../models/User.model");
+const { isAuthenticated } = require("../middleware/middlewares");
+//const fileUploader = require("../config/cloudinary.config");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -13,15 +15,15 @@ router.get("/", async (req, res, next) => {
 // GET // search by : location , theme , activity
 router.get("/search", async (req, res, next) => {
   try {
-    const searchForLocation = req.query;
-    const locatedExperiences = await Experience.find(searchForLocation);
+    const searchForExperience = req.query;
+    const locatedExperiences = await Experience.find(searchForExperience);
     return res.status(200).json(locatedExperiences);
   } catch (error) {
     next(error);
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/create", isAuthenticated, async (req, res, next) => {
   try {
     const newExperience = req.body;
     const createdExperience = await Experience.create({
@@ -31,7 +33,7 @@ router.post("/", async (req, res, next) => {
       description: newExperience.description,
       activity: newExperience.activity,
       picture: newExperience.picture,
-      userId: newExperience.userId,
+      userId: req.user._id,
     });
     console.log("createdExperience", createdExperience);
 
@@ -41,7 +43,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", isAuthenticated, async (req, res) => {
   const newExperience = req.body;
   const ExperienceUpdated = await Experience.findByIdAndUpdate(
     req.params.id,
@@ -59,7 +61,7 @@ router.patch("/:id", async (req, res) => {
   res.json({ ExperienceUpdated });
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuthenticated, async (req, res) => {
   await Experience.findByIdAndDelete(req.params.id);
   res.sendStatus(204);
 });
