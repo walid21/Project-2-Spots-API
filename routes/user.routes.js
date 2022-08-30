@@ -9,7 +9,7 @@ const bcrypt = require("bcrypt");
 //=======================================================================================//
 
 //=========================GET=========================//
-// should we keep it as is ? because we need allexperience instead ? or maybe just add isAuthenticated to it
+
 //GET => find all users
 router.get("/", async (req, res, next) => {
   try {
@@ -32,7 +32,6 @@ router.post("/create", async (req, res, next) => {
       username: newUser.username,
       email: newUser.email,
       password: passwordHashed,
-      pictures: newUser.pictures,
       favorites: newUser.favorites,
     });
 
@@ -54,7 +53,6 @@ router.patch("/:id", isAuthenticated, async (req, res) => {
       username: newUser.username,
       email: newUser.email,
       password: newUser.password,
-      pictures: newUser.pictures,
       favorites: newUser.favorites,
     },
     { new: true }

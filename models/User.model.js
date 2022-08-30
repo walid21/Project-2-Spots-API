@@ -22,12 +22,6 @@ const userSchema = new Schema({
     minLength: 6,
   },
 
-  // TODO : we have to modify the user object and put ObjectId of : experienceID and favoritesId
-  // BECAUSE :
-  pictures: {
-    type: [String],
-  },
-
   favorites: {
     type: [String],
   },

@@ -3,8 +3,7 @@ const router = require("express").Router();
 const authRoutes = require("./auth.routes");
 const allExperience = require("./experience.routes");
 const allUsers = require("./user.routes");
-const allPictures = require("./lambdaUser.routes");
-const lambdaUserRoutes = require("./lambdaUser.routes");
+const favorites = require("./favorite.routes");
 
 /* GET home page */
 // router.get("/", (req, res, next) => {
@@ -14,10 +13,10 @@ const lambdaUserRoutes = require("./lambdaUser.routes");
 //=======================================================================================//
 //  We are prefixing our route with :
 //=======================================================================================//
-router.use("/", lambdaUserRoutes); //==> Home page for all users : can GET on allExperiences
+
 router.use("/auth", authRoutes); //==> SignUp, Login and hashing
 router.use("/experience", allExperience); //==>
 router.use("/user", allUsers); //==>
-router.use("/picture", allPictures); //==>
+router.use("/favorite", favorites);
 
 module.exports = router;

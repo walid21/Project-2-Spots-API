@@ -1,7 +1,7 @@
 //=========================IMPORTING MIDDLEWAARE/MODELS/MODULES=========================//
 const router = require("express").Router();
 const Experience = require("../models/experience.model");
-// const User = require("../models/User.model");
+const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/middlewares");
 const uploader = require("../config/cloudinary.config");
 
@@ -10,7 +10,7 @@ const uploader = require("../config/cloudinary.config");
 //=======================================================================================//
 
 //=========================GET=========================//
-// we should add the middleware isAuthenticated ?
+//
 
 //GET => find all experiences
 router.get("/", async (req, res, next) => {
@@ -62,23 +62,28 @@ router.post(
 );
 
 //=========================PATCH=========================// We should test them.
-router.patch("/:id", isAuthenticated, async (req, res) => {
-  const newExperience = req.body;
-  const ExperienceUpdated = await Experience.findByIdAndUpdate(
-    req.params.id,
-    {
-      name: newExperience.name,
-      location: newExperience.location,
-      theme: newExperience.theme,
-      description: newExperience.description,
-      activity: newExperience.activity,
-      picture: newExperience.picture,
-      userId: newExperience.userId,
-    },
-    { new: true }
-  );
-  res.json({ ExperienceUpdated });
-});
+router.patch(
+  "/:id",
+  isAuthenticated,
+  uploader.single("pictures"),
+  async (req, res) => {
+    const newExperience = req.body;
+    const ExperienceUpdated = await Experience.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: newExperience.name,
+        location: newExperience.location,
+        theme: newExperience.theme,
+        description: newExperience.description,
+        activity: newExperience.activity,
+        picture: req.file.path,
+        userId: newExperience.userId,
+      },
+      { new: true }
+    );
+    res.json({ ExperienceUpdated });
+  }
+);
 
 //=========================PATCH=========================//
 router.delete("/:id", isAuthenticated, async (req, res) => {
