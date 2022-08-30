@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const { Schema, model } = mongoose;
 
 const userSchema = new Schema({
@@ -13,7 +12,6 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
-
     lowercase: true,
     required: true,
   },
@@ -22,9 +20,6 @@ const userSchema = new Schema({
     required: true,
     max: 1024,
     minLength: 6,
-  },
-  pictures: {
-    type: [String],
   },
 
   favorites: {

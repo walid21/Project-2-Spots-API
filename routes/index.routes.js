@@ -1,16 +1,22 @@
 const router = require("express").Router();
+//=========================ROUTES=========================//
 const authRoutes = require("./auth.routes");
 const allExperience = require("./experience.routes");
 const allUsers = require("./user.routes");
-const { isAuthenticated } = require("../middleware/middlewares");
-/* GET home page */
-router.get("/", (req, res, next) => {
-  console.log(req.user);
-  res.json("All good in here");
-});
+const favorites = require("./favorite.routes");
 
-router.use("/auth", authRoutes);
-router.use("/experience", allExperience);
-router.use("/user", allUsers);
+/* GET home page */
+// router.get("/", (req, res, next) => {
+//   res.json("All good in here");
+// });
+
+//=======================================================================================//
+//  We are prefixing our route with :
+//=======================================================================================//
+
+router.use("/auth", authRoutes); //==> SignUp, Login and hashing
+router.use("/experience", allExperience); //==>
+router.use("/user", allUsers); //==>
+router.use("/favorite", favorites);
 
 module.exports = router;
