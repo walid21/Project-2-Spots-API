@@ -1,15 +1,13 @@
 const router = require("express").Router();
-
-// ℹ️ Handles password encryption
-const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
-const jsonWebToken = require("jsonwebtoken");
 
-// How many rounds should bcrypt run the salt (default [10 - 12 rounds])
-const saltRounds = 10;
-
-// Require the User model in order to interact with the database
+//=========================ROUTES=========================//
 const User = require("../models/User.model");
+
+//=========================PASSWORD ENCRYPTION=========================//
+const bcrypt = require("bcrypt");
+const jsonWebToken = require("jsonwebtoken");
+const saltRounds = 10;
 
 router.post("/signup", (req, res) => {
   const { username, password } = req.body;
@@ -25,18 +23,6 @@ router.post("/signup", (req, res) => {
       errorMessage: "Your password needs to be at least 8 characters long.",
     });
   }
-
-  //   ! This use case is using a regular expression to control for special characters and min length
-  /*
-  const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
-
-  if (!regex.test(password)) {
-    return res.status(400).json( {
-      errorMessage:
-        "Password needs to have at least 8 chars and must contain at least one number, one lowercase and one uppercase letter.",
-    });
-  }
-  */
 
   // Search the database for a user with the username submitted in the form
   User.findOne({ username }).then((found) => {

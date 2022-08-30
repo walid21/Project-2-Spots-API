@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const { Schema, model } = mongoose;
 
 const userSchema = new Schema({
@@ -13,7 +12,6 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
-
     lowercase: true,
     required: true,
   },
@@ -23,6 +21,9 @@ const userSchema = new Schema({
     max: 1024,
     minLength: 6,
   },
+
+  // TODO : we have to modify the user object and put ObjectId of : experienceID and favoritesId
+  // BECAUSE :
   pictures: {
     type: [String],
   },
