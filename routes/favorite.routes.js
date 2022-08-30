@@ -1,11 +1,11 @@
 const router = require("express").Router();
 const Favorite = require("../models/favorites.model");
-const User = require("../models/User.model");
+// const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/middlewares");
 
 router.get("/", isAuthenticated, async (req, res, next) => {
   try {
-    const allFavorites = await Favorite.find(req.user._id).populate(
+    const allFavorites = await Favorite.find({ user: req.user._id }).populate(
       "experience"
     );
 
@@ -18,9 +18,10 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 router.post("/create", isAuthenticated, async (req, res, next) => {
   try {
     const newFavorite = req.body;
+    console.log(newFavorite);
     const createdFavorite = await Favorite.create({
       user: req.user._id,
-      experience: newFavorite.experienceId,
+      experience: newFavorite.experience,
     });
     res.status(201).json({ createdFavorite });
   } catch (error) {
