@@ -44,7 +44,7 @@ router.post("/signup", validation, async (req, res, next) => {
 //  should we modify the picture(copy/paster the experience route ? using middleware cloudinary)
 
 //PATCH => modify you profil
-router.patch("/:id", isAuthenticated, async (req, res) => {
+router.patch("/update/:id", isAuthenticated, async (req, res) => {
   const newUser = req.body;
   const userUpdated = await User.findByIdAndUpdate(req.params.id, newUser, { new: true });
   res.json({ userUpdated });
