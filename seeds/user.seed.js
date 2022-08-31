@@ -9,15 +9,11 @@ const users = [
     username: "testeur",
     email: "test@test.com",
     password: passwordHashed,
-    pictures: [],
-    favorites: [],
   },
   {
     username: "benlapiche",
     email: "mangemoilapiche@mail.com",
     password: passwordHashed2,
-    favorites: [],
-    pictures: [],
   },
 ];
 
