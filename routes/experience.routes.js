@@ -15,7 +15,7 @@ const uploader = require("../config/cloudinary.config");
 //GET => find all experiences
 router.get("/", async (req, res, next) => {
   try {
-    const allExperiences = await Experience.find();
+    const allExperiences = await Experience.find().select("-userId -_id");
     return res.status(200).json(allExperiences);
   } catch (error) {
     next(error);
@@ -36,57 +36,47 @@ router.get("/search", async (req, res, next) => {
 //=========================POST=========================//
 
 //POST => create a new Experience + uploadPicture to Cloudinary
-router.post(
-  "/create",
-  isAuthenticated,
-  uploader.single("pictures"),
-  async (req, res, next) => {
-    try {
-      console.log(req.file);
-      const newExperience = req.body;
-      const createdExperience = await Experience.create({
-        name: newExperience.name,
-        location: newExperience.location,
-        theme: newExperience.theme,
-        description: newExperience.description,
-        activity: newExperience.activity,
-        picture: req.file.path,
-        userId: req.user._id,
-      });
+router.post("/create", isAuthenticated, uploader.single("picture"), async (req, res, next) => {
+  try {
+    console.log(req.file);
+    const newExperience = req.body;
+    const createdExperience = await Experience.create({
+      name: newExperience.name,
+      location: newExperience.location,
+      theme: newExperience.theme,
+      description: newExperience.description,
+      activity: newExperience.activity,
+      picture: req.file.path,
+      userId: req.user._id,
+    });
 
-      res.status(201).json({ experience: createdExperience });
-    } catch (error) {
-      next(error);
-    }
+    res.status(201).json({ experience: createdExperience });
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 //=========================PATCH=========================// We should test them.
-router.patch(
-  "/:id",
-  isAuthenticated,
-  uploader.single("pictures"),
-  async (req, res) => {
-    const newExperience = req.body;
-    const ExperienceUpdated = await Experience.findByIdAndUpdate(
-      req.params.id,
-      {
-        name: newExperience.name,
-        location: newExperience.location,
-        theme: newExperience.theme,
-        description: newExperience.description,
-        activity: newExperience.activity,
-        picture: req.file.path,
-        userId: newExperience.userId,
-      },
-      { new: true }
-    );
-    res.json({ ExperienceUpdated });
-  }
-);
+router.patch("/update/:id", isAuthenticated, uploader.single("picture"), async (req, res) => {
+  const newExperience = req.body;
+  const ExperienceUpdated = await Experience.findByIdAndUpdate(
+    req.params.id,
+    {
+      name: newExperience.name,
+      location: newExperience.location,
+      theme: newExperience.theme,
+      description: newExperience.description,
+      activity: newExperience.activity,
+      picture: req.file.path,
+      userId: newExperience.userId,
+    },
+    { new: true }
+  );
+  res.json({ ExperienceUpdated });
+});
 
 //=========================PATCH=========================//
-router.delete("/:id", isAuthenticated, async (req, res) => {
+router.delete("/delete/:id", isAuthenticated, async (req, res) => {
   await Experience.findByIdAndDelete(req.params.id);
   res.sendStatus(204);
 });
