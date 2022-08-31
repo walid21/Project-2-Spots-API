@@ -3,7 +3,7 @@ const router = require("express").Router();
 const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/middlewares");
 const bcrypt = require("bcrypt");
-
+const validation = require("../middleware/validation.middleware");
 //=======================================================================================//
 // All routes are prefixed with /user
 //=======================================================================================//
@@ -24,7 +24,7 @@ router.get("/", async (req, res, next) => {
 //=========================POST=========================//
 
 //POST => create a new user
-router.post("/create", async (req, res, next) => {
+router.post("/signup", validation, async (req, res, next) => {
   try {
     const newUser = req.body;
     const passwordHashed = bcrypt.hashSync(newUser.password, 10);
@@ -32,7 +32,6 @@ router.post("/create", async (req, res, next) => {
       username: newUser.username,
       email: newUser.email,
       password: passwordHashed,
-      favorites: newUser.favorites,
     });
 
     res.status(201).json({ user: createdUser });
@@ -47,16 +46,7 @@ router.post("/create", async (req, res, next) => {
 //PATCH => modify you profil
 router.patch("/:id", isAuthenticated, async (req, res) => {
   const newUser = req.body;
-  const userUpdated = await User.findByIdAndUpdate(
-    req.params.id,
-    {
-      username: newUser.username,
-      email: newUser.email,
-      password: newUser.password,
-      favorites: newUser.favorites,
-    },
-    { new: true }
-  );
+  const userUpdated = await User.findByIdAndUpdate(req.params.id, newUser, { new: true });
   res.json({ userUpdated });
 });
 //PATCH => modify you profil

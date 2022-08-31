@@ -5,25 +5,17 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
-    minLength: 3,
-    maxLength: 30,
-    lowercase: true,
-    trim: true,
   },
   email: {
     type: String,
-    lowercase: true,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
     required: true,
     max: 1024,
     minLength: 6,
-  },
-
-  favorites: {
-    type: [String],
   },
 });
 
