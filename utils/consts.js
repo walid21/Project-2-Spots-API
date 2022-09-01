@@ -1,3 +1,3 @@
-const MONGO_URI = /*`${process.env.MONGODB_URI}` ||*/ "mongodb://localhost/spots_API";
+const MONGO_URI = `${process.env.MONGODB_URI}`;
 
 module.exports = MONGO_URI;
