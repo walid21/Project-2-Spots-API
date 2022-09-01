@@ -13,7 +13,7 @@ const validation = require("../middleware/validation.middleware");
 //GET => find all users
 router.get("/", async (req, res, next) => {
   try {
-    const allUsers = await User.find();
+    const allUsers = await User.find().select("-password");
     return res.status(200).json(allUsers);
   } catch (error) {}
 });
@@ -33,7 +33,7 @@ router.post("/signup", validation, async (req, res, next) => {
       email: newUser.email,
       password: passwordHashed,
     });
-
+    createdUser.password = undefined;
     res.status(201).json({ user: createdUser });
   } catch (error) {
     next(error);
@@ -46,7 +46,7 @@ router.post("/signup", validation, async (req, res, next) => {
 //PATCH => modify you profil
 router.patch("/update/:id", isAuthenticated, async (req, res) => {
   const newUser = req.body;
-  const userUpdated = await User.findByIdAndUpdate(req.params.id, newUser, { new: true });
+  const userUpdated = await User.findByIdAndUpdate(req.params.id, newUser, { new: true }).select("-password");
   res.json({ userUpdated });
 });
 //PATCH => modify you profil
