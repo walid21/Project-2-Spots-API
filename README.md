@@ -1,21 +1,25 @@
-What is Foodder?
-Foodder is a place to share your favorite culinary experiences.
-You discovered a new dish in your favorite city? Share it on Foodder.
-You plan on traveling abroad? Find the best dishes to try added by other users.
-Foodder was built as part of an Ironhack coding bootcamp.
+What is BeSpot?
+It’s a place where you can share your favorites BeSpot. Or if you miss some ideas , you could search for some Spots already shared by our BeSpotter. 
+It could also be anything because it’s more than an API , it’s a way of life. That's why anyone can have his own definition. 
+So come and share yours on BeSpot!
+
 Data model
+
 Models
 User
-Article (post created by a user)
+Experience (spots created by users)
 Favorite (post saved as a favorite by a user)
-Country
-A user can create a post and indicate if it is public or private. Public posts can be seen by all users - either on a user's profile or on the feed page.
-User Experience
-Users can filter by countries in order to personnalize their experience. They're also able to save their favorite posts from other users.
+
+
+A user can create a spot by posting a picture with a description of his experience at this places and he will also have to specify the location, the activity and the theme of that spot.
+Users can search for spots and filter by location, activity or theme in order to be more precise with it. 
+They're also able to save their favorite spots from other users.
+
 Tech Stack
-Nodejs | Express | MongoDB (Compass locally & Altas for managing the deployed database)
-All data in the cloud is stored in Europe.
+Nodejs | Express | MongoDB (Compass locally & Altas for managing the deployed database) | Heroku
+
 Documentation
-https://documenter.getpostman.com/view/21219252/UzBiPULQ
+https://documenter.getpostman.com/view/22850989/VUxPw7o4
+
 Deployed API
-https://foodder.herokuapp.com/
+https://bestspot.herokuapp.com
