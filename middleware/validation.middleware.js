@@ -13,7 +13,7 @@ const validation = async (req, res, next) => {
 
   if (!regexPassword.test(password)) {
     res.status(500).json({
-      errorMessage: "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter or username .",
+      errorMessage: "Password needs to have at least 6 characters and must contain at least one number, one lowercase and one uppercase letter.",
     });
     return;
   }

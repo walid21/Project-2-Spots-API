@@ -57,26 +57,30 @@ router.post("/create", isAuthenticated, uploader.single("picture"), async (req, 
 });
 
 //=========================PATCH=========================// We should test them.
-router.patch("/update/:id", isAuthenticated, uploader.single("picture"), async (req, res) => {
-  const newExperience = req.body;
-  const ExperienceUpdated = await Experience.findByIdAndUpdate(
-    req.params.id,
-    {
-      name: newExperience.name,
-      location: newExperience.location,
-      theme: newExperience.theme,
-      description: newExperience.description,
-      activity: newExperience.activity,
-      picture: req.file.path,
-      userId: newExperience.userId,
-    },
-    { new: true }
-  );
-  res.json({ ExperienceUpdated });
+router.patch("/:id", isAuthenticated, uploader.single("picture"), async (req, res) => {
+  try {
+    const newExperience = req.body;
+    const ExperienceUpdated = await Experience.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: newExperience.name,
+        location: newExperience.location,
+        theme: newExperience.theme,
+        description: newExperience.description,
+        activity: newExperience.activity,
+        picture: req.file?.path,
+        userId: newExperience.userId,
+      },
+      { new: true }
+    );
+    res.status(201).json({ ExperienceUpdated });
+  } catch (error) {
+    next(error);
+  }
 });
 
 //=========================PATCH=========================//
-router.delete("/delete/:id", isAuthenticated, async (req, res) => {
+router.delete("/:id", isAuthenticated, async (req, res) => {
   await Experience.findByIdAndDelete(req.params.id);
   res.sendStatus(204);
 });

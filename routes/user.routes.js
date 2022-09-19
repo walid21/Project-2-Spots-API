@@ -15,7 +15,9 @@ router.get("/", async (req, res, next) => {
   try {
     const allUsers = await User.find().select("-password");
     return res.status(200).json(allUsers);
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 });
 
 //GET => should we GET the user id ? Because when he's logged in ,
@@ -44,11 +46,16 @@ router.post("/signup", validation, async (req, res, next) => {
 //  should we modify the picture(copy/paster the experience route ? using middleware cloudinary)
 
 //PATCH => modify you profil
-router.patch("/update/:id", isAuthenticated, async (req, res) => {
-  const newUser = req.body;
-  const userUpdated = await User.findByIdAndUpdate(req.params.id, newUser, { new: true }).select("-password");
-  res.json({ userUpdated });
+router.patch("/:id", isAuthenticated, async (req, res) => {
+  try {
+    const newUser = req.body;
+    const userUpdated = await User.findByIdAndUpdate(req.params.id, newUser, { new: true }).select("-password");
+    res.json({ userUpdated });
+  } catch (error) {
+    next(error);
+  }
 });
+
 //PATCH => modify you profil
 router.delete("/:id", isAuthenticated, async (req, res) => {
   await User.findByIdAndDelete(req.params.id);
