@@ -15,7 +15,7 @@ const uploader = require("../config/cloudinary.config");
 //GET => find all experiences
 router.get("/", async (req, res, next) => {
   try {
-    const allExperiences = await Experience.find().select("-userId -_id");
+    const allExperiences = await Experience.find();
     return res.status(200).json(allExperiences);
   } catch (error) {
     next(error);
