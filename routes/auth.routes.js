@@ -44,15 +44,14 @@ router.post("/signup", (req, res) => {
         res.status(201).json(user);
       })
       .catch((error) => {
+        if (error.code === 11000) {
+          return res.status(400).json({
+            errorMessage: `username need to be unique. The username you chose is already in use.`,
+          });
+        }
         if (error instanceof mongoose.Error.ValidationError) {
           return res.status(400).json({ errorMessage: error.message });
         }
-        if (error.code === 11000) {
-          return res.status(400).json({
-            errorMessage: "Username need to be unique. The username you chose is already in use.",
-          });
-        }
-        return res.status(500).json({ errorMessage: error.message });
       });
   });
 });

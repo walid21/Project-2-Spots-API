@@ -7,9 +7,9 @@ const favorites = require("./favorite.routes");
 const Experience = require("../models/experience.model");
 
 /* GET home page */
-router.get("/home", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
-    const allExperiences = await Experience.find().select("-_id picture name");
+    const allExperiences = await Experience.find().select(" picture name");
     return res.status(200).json(allExperiences);
   } catch (error) {
     next(error);
