@@ -38,7 +38,6 @@ router.get("/search", async (req, res, next) => {
 //POST => create a new Experience + uploadPicture to Cloudinary
 router.post("/create", isAuthenticated, uploader.single("picture"), async (req, res, next) => {
   try {
-    console.log(req.file);
     const newExperience = req.body;
     const createdExperience = await Experience.create({
       name: newExperience.name,
