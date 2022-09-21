@@ -26,6 +26,9 @@ router.get("/", async (req, res, next) => {
 router.get("/search", async (req, res, next) => {
   try {
     const searchForExperience = req.query;
+    if (searchForExperience.userId === "me") {
+      searchForExperience.userId = req.user.id;
+    }
     const locatedExperiences = await Experience.find(searchForExperience);
     return res.status(200).json(locatedExperiences);
   } catch (error) {
