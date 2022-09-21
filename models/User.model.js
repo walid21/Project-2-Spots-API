@@ -17,6 +17,13 @@ const userSchema = new Schema({
     max: 1024,
     minLength: 6,
   },
+  // picture: {
+  //   type: Schema.Types.String,
+  // },
+  // bio: {
+  //   type: Schema.Types.String,
+  //   max: 500,
+  // },
 });
 
 const User = model("User", userSchema);
