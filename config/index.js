@@ -25,10 +25,11 @@ module.exports = (app) => {
   // controls a very specific header to pass headers from the frontend
   // ! please configure the cors `origin` key so that you can accept the requests wherever they might be coming from
   app.use(
-    cors({
+    cors()
+    /*{
       credentials: true,
       origin: process.env.ORIGIN || "http://localhost:3000",
-    })
+      }*/
   );
 
   // In development environment the app logs
