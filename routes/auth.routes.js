@@ -7,13 +7,16 @@ const User = require("../models/User.model");
 //=========================PASSWORD ENCRYPTION=========================//
 const bcrypt = require("bcrypt");
 const jsonWebToken = require("jsonwebtoken");
+const { isAuthenticated } = require("../middleware/middlewares");
 const saltRounds = 10;
 
 router.post("/signup", (req, res) => {
   const { username, password } = req.body;
 
   if (!username) {
-    return res.status(400).json({ errorMessage: "Please provide your username." });
+    return res
+      .status(400)
+      .json({ errorMessage: "Please provide your username." });
   }
 
   if (password.length < 8) {
@@ -60,7 +63,9 @@ router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
 
   if (!username) {
-    return res.status(400).json({ errorMessage: "Please provide your username." });
+    return res
+      .status(400)
+      .json({ errorMessage: "Please provide your username." });
   }
 
   // Here we use the same logic as above
@@ -106,5 +111,9 @@ router.post("/login", (req, res, next) => {
       // return res.status(500).render("login", { errorMessage: err.message });
     });
 });
+
+router.get("/login", isAuthenticated, (req, res, next) =>
+  res.status(200).json(req.user)
+);
 
 module.exports = router;
