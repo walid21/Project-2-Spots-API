@@ -23,7 +23,7 @@ router.get("/", async (req, res, next) => {
 });
 
 //GET => search by : location , theme , activity
-router.get("/search", async (req, res, next) => {
+router.get("/search", isAuthenticated, async (req, res, next) => {
   try {
     const searchForExperience = req.query;
     if (searchForExperience.userId === "me") {
@@ -36,6 +36,14 @@ router.get("/search", async (req, res, next) => {
   }
 });
 
+router.get("/:id", isAuthenticated, async (req, res, next) => {
+  try {
+    const oneExperience = await Experience.findById(req.params.id);
+    res.status(200).json(oneExperience);
+  } catch (error) {
+    next(error);
+  }
+});
 //=========================POST=========================//
 
 //POST => create a new Experience + uploadPicture to Cloudinary
